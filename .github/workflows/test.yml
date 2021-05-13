@@ -7,9 +7,10 @@ on:
 jobs:
   testjob:
     if: |
-      ( github.event.pull_request.merged == true ) &&
-      ( ( github.event.pull_request.base.ref == 'refs/remotes/origin/main' ) ||
-      ( github.event.pull_request.base.ref == 'refs/remotes/origin/dev' ) )
+      ( github.event.pull_request.merged == true ) 
+#      &&
+#      ( ( github.event.pull_request.base.ref == 'refs/remotes/origin/main' ) ||
+#      ( github.event.pull_request.base.ref == 'refs/remotes/origin/dev' ) )
     runs-on: windows-latest
     steps:
 
