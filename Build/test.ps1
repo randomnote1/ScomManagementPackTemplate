@@ -12,7 +12,11 @@ git branch -a
 Set-Location -Path ( Join-Path -Path $rootFolder -ChildPath base )
 git branch -a
 
-Get-Date > testing.txt
+switch ($env:GITHUB_BASE_REF)
+{
+    dev { "dev $(Get-Date)" > testing.txt }
+    main { "main $(Get-Date)" > testing.txt }
+}
 
 git config user.name "GitHub Actions Bot"
 git config user.email "<>"
