@@ -1,10 +1,12 @@
 # Set the verbose preference
 $VerbosePreference = 'Continue'
 
-Set-Location -Path head
+$rootFolder = $pwd
+
+Set-Location -Path ( Join-Path -Path $rootFolder -ChildPath head )
 git branch -a
 
-Set-Location -Path base
+Set-Location -Path ( Join-Path -Path $rootFolder -ChildPath base )
 git branch -a
 
 Get-Date > testing.txt
