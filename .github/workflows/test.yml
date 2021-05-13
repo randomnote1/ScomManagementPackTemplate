@@ -2,19 +2,18 @@ name: test
 
 on:
   pull_request:
-    branches:
-        -main
-        -dev
-    types: [opened, reopened, synchronize]
-  workflow_dispatch:
+    types: [closed]
 
 jobs:
   testjob:
+    if: github.event.pull_request.merged == true
     runs-on: windows-latest
     steps:
 
       - name: Checkout Repo
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       # Execute the build PowerShell script
       - name: Execute build script
