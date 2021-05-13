@@ -1,8 +1,6 @@
 # Set the verbose preference
 $VerbosePreference = 'Continue'
 
-Install-Module -Name posh-git
-
-Import-Module -Name posh-git
+Install-Module -Name posh-git -Force
 
 Write-Verbose -Message Test
