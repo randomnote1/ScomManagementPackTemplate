@@ -1,6 +1,10 @@
 # Set the verbose preference
 $VerbosePreference = 'Continue'
 
+Set-Location -Path head
+git branch -a
+
+Set-Location -Path base
 git branch -a
 
 Get-Date > testing.txt
