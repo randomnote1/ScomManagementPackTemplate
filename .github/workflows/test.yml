@@ -25,4 +25,4 @@ jobs:
       # Execute the build PowerShell script
       - name: Execute build script
         shell: powershell
-        run: .\Build\test.ps1
+        run: .\head\Build\test.ps1
