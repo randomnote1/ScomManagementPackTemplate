@@ -1,0 +1,18 @@
+name: test
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  testjob:
+    runs-on: windows-latest
+    steps:
+
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      # Execute the build PowerShell script
+      - name: Execute build script
+        shell: powershell
+        run: .\Build\test.ps1
