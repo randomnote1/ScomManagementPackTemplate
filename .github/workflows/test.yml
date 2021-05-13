@@ -6,7 +6,9 @@ on:
 
 jobs:
   testjob:
-    if: github.event.pull_request.merged == true
+    if: |
+      ( github.event.pull_request.merged == true ) &&
+      ( ( github.ref == 'refs/base/main' ) || ( github.ref == 'refs/base/dev' ) )
     runs-on: windows-latest
     steps:
 
