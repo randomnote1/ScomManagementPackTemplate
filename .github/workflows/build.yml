@@ -4,8 +4,8 @@ name: Build Management Pack
 on:
   pull_request:
     branches:
-      -main
-      -dev
+      -mainbranch
+      -devbranch
     types: [opened, reopened, synchronize]
 
   # Allows you to run this workflow manually from the Actions tab
