@@ -8,7 +8,7 @@ jobs:
   testjob:
     if: |
       ( github.event.pull_request.merged == true ) &&
-      ( ( github.base_ref == 'refs/base/main' ) || ( github.base_ref == 'refs/base/dev' ) )
+      ( ( github.base_ref == 'refs/head/main' ) || ( github.base_ref == 'refs/head/dev' ) )
     runs-on: windows-latest
     steps:
 
