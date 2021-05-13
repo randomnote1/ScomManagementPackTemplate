@@ -1,7 +1,11 @@
 name: test
 
 on:
-  push:
+  pull_request:
+    branches:
+        -main
+        -dev
+    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 jobs:
