@@ -15,7 +15,7 @@ jobs:
     # Only run when a pull request is merged to dev or main
     if: |
       ( github.event.pull_request.merged == true ) &&
-      ( ( github.base_ref == 'refs/remotes/origin/mail' ) || ( github.base_ref == 'refs/remotes/origin/dev' ) )
+      ( ( github.base_ref == 'main' ) || ( github.base_ref == 'dev' ) )
     runs-on: windows-latest
 
     steps:
