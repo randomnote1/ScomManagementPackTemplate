@@ -18,7 +18,7 @@ msiexec /quiet /i $vsaeMsiFile.FullName
 $vsWherePath = Join-Path -Path ( Join-Path -Path ( Join-Path -Path ${env:ProgramFiles(x86)} -ChildPath 'Microsoft Visual Studio' ) -ChildPath Installer ) -ChildPath vswhere.exe
 Write-Verbose -Message "vswhere.exe path: $vsWherePath"
 
-foreach ( $solution in ( Get-ChildItem -Filter *.sln ) )
+foreach ( $solution in ( Get-ChildItem -Path base -Filter *.sln ) )
 {
 	# Get the Visual Studio version from the solution file
 	$solutionFileContent = $solution | Get-Content
@@ -41,8 +41,13 @@ foreach ( $solution in ( Get-ChildItem -Filter *.sln ) )
 	$msBuildExe = Get-Item -Path ( Join-Path -Path $vsinfo.installationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe' ) -ErrorAction Stop
 	Write-Verbose -Message "MSBuild.exe path: $($msBuildExe.FullName)"
 
-	foreach ( $projectFile in ( Get-ChildItem -Filter *.mpproj -Recurse ) )
+	foreach ( $projectFile in ( Get-ChildItem -Path base -Filter *.mpproj -Recurse ) )
 	{
+		$projectFileXml = [System.Xml.XmlDocument] ( $projectFile | Get-Content )
+		$managementPackName = $projectFileXml.Project.PropertyGroup | Where-Object -Property Name -NE 'PropertyGroup' | Select-Object -ExpandProperty Name
+		Write-Output -InputObject "ManagementPackName=$managementPackName" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+		Write-Verbose -Message "Management Pack Name: $managementPackName"
+		
 		# Get the next management pack version from the user file
 		$projectUserFile = Get-ChildItem -Path $projectFile.Directory -Filter *.mpproj.user
 		$projectUserFileXml = [System.Xml.XmlDocument] ( $projectUserFile | Get-Content )
@@ -55,18 +60,18 @@ foreach ( $solution in ( Get-ChildItem -Filter *.sln ) )
 		$nextVersionBuild = $nextVersion.Build
 		$nextVersionRevision = $nextVersion.Revision
 
-		Write-Verbose -Message "Branch: $env:GITHUB_REF"
-		switch -Regex ( $env:GITHUB_REF )
+		Write-Verbose -Message "Branch: $env:GITHUB_BASE_REF"
+		switch -Regex ( $env:GITHUB_BASE_REF )
 		{
 			# Increment the minor version
-			'^refs/heads/dev'
+			'^dev'
 			{
 				$commitComment = 'Incrementing minor version'
 				$nextVersionMinor++
 			}
 
 			# Increment the major version
-			'^refs/heads/main'
+			'^main'
 			{
 				$commitComment = 'Incrementing major version'
 				$nextVersionMajor++
@@ -103,7 +108,7 @@ foreach ( $solution in ( Get-ChildItem -Filter *.sln ) )
 	}
 
 	# Verify the management pack files were created
-	$buildFiles = Get-ChildItem -Path .\*\bin\Release\* | Where-Object -FilterScript { $_.Extension -match 'mpb' }
+	$buildFiles = Get-ChildItem -Path .\base\*\bin\Release\* | Where-Object -FilterScript { $_.Extension -match 'mpb' }
 
 	# Find the relevant file to release
 	if ( $buildFiles.Extension -contains '.mpb' )
@@ -129,11 +134,7 @@ foreach ( $solution in ( Get-ChildItem -Filter *.sln ) )
 		Write-Output -InputObject "Version=$($newVersion.ToString())" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
 		# Create the file name
-		$artifactFileName = "$($releaseFile.Name).zip"
-		Write-Output -InputObject "ArtifactFileName=$artifactFileName" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
-		# Zip up the management pack files
-		Compress-Archive -Path $releaseFile.FullName -Destination $artifactFileName
+		Write-Output -InputObject "ArtifactFileName=$($releaseFile.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 	}
 
 	# Commit the version update to the reference repo
