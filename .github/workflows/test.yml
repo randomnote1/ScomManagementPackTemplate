@@ -28,3 +28,12 @@ jobs:
       - name: Execute build script
         shell: powershell
         run: .\head\Build\test.ps1
+
+      - name: Rebase dev
+        if: github.base_ref == 'main'
+        shell: powershell
+        run: |
+          git checkout dev
+          git fetch origin main
+          git rebase origin main
+          git push origin dev --force
