@@ -42,8 +42,8 @@ jobs:
         with:
           path: base
           commit-message: Update dev version number from main
-          committer: GitHub Actions Bot <>
-          author: GitHub Actions Bot <>
+          committer: GitHub Actions Bot <noreply@github.com>
+          author: GitHub Actions Bot <noreply@github.com>
           branch: main
           delete-branch: false
           base: dev
