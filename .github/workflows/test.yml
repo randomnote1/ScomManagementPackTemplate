@@ -28,13 +28,20 @@ jobs:
       - name: Execute build script
         shell: powershell
         run: .\head\Build\test.ps1
+      
+      - name: List Remotes
+        shell: powershell
+        run: |
+          Set-Location -Path base
+          git remote -v
 
       - name: Rebase dev
         if: github.base_ref == 'main'
         shell: powershell
         run: |
           Set-Location -Path base
+          git remote -v
           git checkout dev
-          git fetch origin main
-          git rebase origin main
-          git push origin dev --force
+          git fetch main
+          git rebase main
+          git push dev --force
