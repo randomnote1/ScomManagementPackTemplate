@@ -14,12 +14,17 @@ git branch -a
 
 switch ($env:GITHUB_BASE_REF)
 {
-    dev { "dev $(Get-Date)" > testing.txt }
-    main { "main $(Get-Date)" > testing.txt }
+    dev { $fileContents = "# dev $(Get-Date)" }
+    main { $fileContents = "# main $(Get-Date)" }
+}
+
+if ( $env:GITHUB_BASE_REF -in @('dev','main') )
+{
+    $fileContents | Out-File -FilePath testing.md -Encoding utf8
 }
 
 git config user.name "GitHub Actions Bot"
 git config user.email "<>"
-git add testing.txt
+git add .
 git commit -m "new date commit"
 git push
