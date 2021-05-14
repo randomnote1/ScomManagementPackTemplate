@@ -33,7 +33,7 @@ jobs:
           ( github.base_ref == 'main' ) ||  
           ( ( github.base_ref == 'dev' ) && ( github.head_ref != 'main' ) )
         shell: powershell
-        run: .\head\Build\test.ps1
+        run: .\base\Build\test.ps1
       
       # Open a pull request for dev <- main
       - name: Open pull to commit into dev from main
