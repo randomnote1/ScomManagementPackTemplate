@@ -34,6 +34,7 @@ jobs:
         run: |
           Set-Location -Path base
           git remote -v
+          git branch -a
 
       - name: Rebase dev
         if: github.base_ref == 'main'
