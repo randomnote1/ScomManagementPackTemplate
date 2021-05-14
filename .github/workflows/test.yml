@@ -10,7 +10,7 @@ jobs:
       ( github.event.pull_request.merged == true ) &&
       (
          ( github.base_ref == 'main' ) ||
-         ( ( github.base_ref == 'dev' ) && ( github.head_ref != 'main' ) )
+         ( github.base_ref == 'dev' )
       )
     runs-on: windows-latest
     steps:
@@ -29,11 +29,13 @@ jobs:
 
       # Execute the build PowerShell script
       - name: Execute build script
+        if: ( github.base_ref == 'dev' ) && ( github.head_ref != 'main' )
         shell: powershell
         run: .\head\Build\test.ps1
       
       # Open a pull request for dev <- main
       - name: Open pull to commit into dev from main
+        if: ( github.base_ref == 'dev' ) && ( github.head_ref == 'main' )
         uses: peter-evans/create-pull-request@v3
         with:
           path: base
