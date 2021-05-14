@@ -25,6 +25,6 @@ if ( $env:GITHUB_BASE_REF -in @('dev','main') )
 
 git config user.name "GitHub Actions Bot"
 git config user.email "<>"
-git add testing.txt
+git add .
 git commit -m "new date commit"
 git push

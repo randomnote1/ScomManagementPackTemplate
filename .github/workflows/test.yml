@@ -34,9 +34,7 @@ jobs:
         shell: powershell
         run: |
           Set-Location -Path base
-          git remote -v
           git fetch origin
-          git branch -a
           git checkout dev
           git rebase origin/main
           git push origin dev --force
