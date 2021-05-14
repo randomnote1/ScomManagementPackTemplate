@@ -20,11 +20,13 @@ switch ($env:GITHUB_BASE_REF)
 
 if ( $env:GITHUB_BASE_REF -in @('dev','main') )
 {
+    Write-Verbose -Message $fileContents
     $fileContents | Out-File -FilePath testing.md -Encoding utf8
 }
 
 git config user.name "GitHub Actions Bot"
 git config user.email "<>"
 git add .
+git diff --name-only --staged
 git commit -m "new date commit"
 git push
