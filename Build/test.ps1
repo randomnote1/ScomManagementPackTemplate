@@ -6,10 +6,10 @@ Write-Verbose -Message "GITHUB_HEAD_REF: $($env:GITHUB_HEAD_REF)"
 
 $rootFolder = $pwd
 
-Set-Location -Path ( Join-Path -Path $rootFolder -ChildPath head )
+Set-Location -Path ( Join-Path -Path $rootFolder -ChildPath base )
 git branch -a
 
-Set-Location -Path ( Join-Path -Path $rootFolder -ChildPath base )
+Set-Location -Path ( Join-Path -Path $rootFolder -ChildPath head )
 git branch -a
 
 switch ($env:GITHUB_BASE_REF)
