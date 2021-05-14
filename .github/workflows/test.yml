@@ -44,7 +44,7 @@ jobs:
           commit-message: Update dev version number from main
           committer: GitHub Actions Bot <>
           author: GitHub Actions Bot <>
-          branch: master
+          branch: main
           delete-branch: false
           base: dev
           title: Rebase dev
