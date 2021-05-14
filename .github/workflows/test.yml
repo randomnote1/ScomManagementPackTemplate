@@ -37,7 +37,7 @@ jobs:
       
       # Open a pull request for dev <- main
       - name: Open pull to commit into dev from main
-        if: ( github.base_ref == 'dev' ) && ( github.head_ref == 'main' )
+        if: ( github.base_ref == 'main' ) && ( github.head_ref == 'dev' )
         uses: peter-evans/create-pull-request@v3
         with:
           path: base
