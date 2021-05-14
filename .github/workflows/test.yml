@@ -36,5 +36,5 @@ jobs:
           Set-Location -Path base
           git fetch origin
           git checkout dev
-          git rebase origin/main
+          git rebase origin/main --strategy-option ours
           git push origin dev --force
