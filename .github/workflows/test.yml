@@ -33,6 +33,7 @@ jobs:
         if: github.base_ref == 'main'
         shell: powershell
         run: |
+          Set-Location -Path base
           git checkout dev
           git fetch origin main
           git rebase origin main
