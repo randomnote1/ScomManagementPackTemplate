@@ -8,7 +8,10 @@ jobs:
   testjob:
     if: |
       ( github.event.pull_request.merged == true ) &&
-      ( ( github.base_ref == 'main' ) || ( github.base_ref == 'dev' ) )
+      (
+         ( github.base_ref == 'main' ) ||
+         ( ( github.base_ref == 'dev' ) && ( github.head_ref != 'main' ) )
+      )
     runs-on: windows-latest
     steps:
 
@@ -28,13 +31,27 @@ jobs:
       - name: Execute build script
         shell: powershell
         run: .\head\Build\test.ps1
+      
+      # Open a pull request for dev <- main
+      - name: Open pull to commit into dev from main
+        uses: peter-evans/create-pull-request@v3
+        with:
+          path: base
+          commit-message: Update dev version number from main
+          committer: GitHub Actions Bot <>
+          author: GitHub Actions Bot <>
+          branch: master
+          delete-branch: false
+          base: dev
+          title: Rebase dev
+          body: Update dev with the version number change from main.
 
-      - name: Rebase dev
-        if: github.base_ref == 'main'
-        shell: powershell
-        run: |
-          Set-Location -Path base
-          git fetch origin
-          git checkout dev
-          git rebase origin/main --strategy-option ours
-          git push origin dev --force
+#      - name: Rebase dev
+#        if: github.base_ref == 'main'
+#        shell: powershell
+#        run: |
+#          Set-Location -Path base
+#          git fetch origin
+#          git checkout dev
+#          git rebase origin/main --strategy-option ours
+#          git push origin dev --force
