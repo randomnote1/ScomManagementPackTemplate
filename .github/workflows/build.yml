@@ -4,8 +4,6 @@ name: Build Management Pack
 on:
   pull_request:
     branches:
-      -mainbranch
-      -devbranch
     types: [closed]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -17,7 +15,7 @@ jobs:
       ( github.event.pull_request.merged == true ) &&
       (
          ( github.base_ref == 'main' ) ||
-         ( ( github.base_ref == 'dev' ) && ( github.head_ref != 'main' ) )
+         ( github.base_ref == 'dev' )
       )
     runs-on: windows-latest
 
@@ -29,11 +27,20 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           path: base
+
+      - name: Checkout Head Repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          path: head
       
       # Execute the build PowerShell script
       - name: Execute build script
+        if: |
+          ( github.base_ref == 'main' ) ||  
+          ( ( github.base_ref == 'dev' ) && ( github.head_ref != 'main' ) )
         shell: powershell
-        run: .\base\Build\build.ps1
+        run: .\head\Build\build.ps1
 
       # Upload the management pack files as artifacts
       - name: Upload Artifacts
@@ -65,3 +72,18 @@ jobs:
           files: ${{ env.ArtifactFileName }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Open a pull request for dev <- main
+      - name: Open pull to commit into dev from main
+        if: ( github.base_ref == 'main' ) && ( github.head_ref == 'dev' )
+        uses: peter-evans/create-pull-request@v3
+        with:
+          path: head
+          commit-message: Update dev version to v${{ env.Version }}
+          committer: GitHub Actions Bot <noreply@github.com>
+          author: GitHub Actions Bot <noreply@github.com>
+          branch: main
+          delete-branch: false
+          base: dev
+          title: Rebase dev
+          body: Update dev to v${{ env.Version }} from main.
