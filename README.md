@@ -1,6 +1,6 @@
 # SCOM Management Pack Template Repository
 
-This repository is a template for SCOM management pack projects. It includes GitHub Automation actions which build management packs and publishes them to the repository automatically.
+This repository is a template for SCOM management pack projects. It includes GitHub Automation actions which build management packs and publishes them to the repository automatically. See the [Wiki](../../../ScomManagementPackTemplate/wiki) for additional documentation.
 
 ## Releases
 
