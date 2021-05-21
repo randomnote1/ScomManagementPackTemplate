@@ -18,7 +18,7 @@ msiexec /quiet /i $vsaeMsiFile.FullName
 $vsWherePath = Join-Path -Path ( Join-Path -Path ( Join-Path -Path ${env:ProgramFiles(x86)} -ChildPath 'Microsoft Visual Studio' ) -ChildPath Installer ) -ChildPath vswhere.exe
 Write-Verbose -Message "vswhere.exe path: $vsWherePath"
 
-$solutions = Get-ChildItem -Path . -Filter *.sln
+$solutions = Get-ChildItem -Path . -Filter *.sln -Recurse
 Write-Verbose -Message ( "Solution Files: `n  {0}" -f ( $solutions.FullName -join "  `n" ) )
 
 foreach ( $solution in $solutions )
