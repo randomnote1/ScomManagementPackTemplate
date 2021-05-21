@@ -112,6 +112,7 @@ foreach ( $solution in $solutions )
 
 	# Verify the management pack files were created
 	$buildFiles = Get-ChildItem -Path .\head\*\*\bin\Release\*
+	Write-Verbose -Message ( "Management Pack Files:`n  {0}" -f ( $buildFiles.FullName -join "`n  " ) )
 
 	# Find the relevant file to release
 	if ( $buildFiles.Extension -contains '.mpb' )
@@ -129,7 +130,7 @@ foreach ( $solution in $solutions )
 
 	if ( -not $releaseFile )
 	{
-		throw 'No management pack files found in ".\*\bin\Release"'
+		throw 'No management pack files found in ".\head\*\*\bin\Release\*"'
 	}
 	else
 	{
@@ -141,6 +142,7 @@ foreach ( $solution in $solutions )
 	}
 
 	# Commit the version update to the reference repo
+	Set-Location -Path head
 	git config user.name "GitHub Actions Bot"
 	git config user.email "<>"
 	git add $projectFile.FullName
