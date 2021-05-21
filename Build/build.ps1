@@ -142,6 +142,7 @@ foreach ( $solution in $solutions )
 	}
 
 	# Commit the version update to the reference repo
+	Push-Location
 	Set-Location -Path head
 	git config user.name "GitHub Actions Bot"
 	git config user.email "<>"
@@ -149,4 +150,5 @@ foreach ( $solution in $solutions )
 	git add $projectUserFile.FullName
 	git commit -m $commitComment
 	git push
+	Pop-Location
 }
