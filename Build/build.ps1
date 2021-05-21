@@ -1,6 +1,9 @@
 # Set the verbose preference
 $VerbosePreference = 'Continue'
 
+Write-Verbose -Message "GITHUB_BASE_REF: $($env:GITHUB_BASE_REF)"
+Write-Verbose -Message "GITHUB_HEAD_REF: $($env:GITHUB_HEAD_REF)"
+
 # Download the System Center Visual Studio Authoring Extensions (VSAE)
 $invokeWebRequestParams = @{
 	Uri = 'https://download.microsoft.com/download/4/4/6/446B60D0-4409-4F94-9433-D83B3746A792/VisualStudioAuthoringConsole_x64.msi'
@@ -142,6 +145,7 @@ foreach ( $solution in $solutions )
 	}
 
 	# Commit the version update to the reference repo
+	Push-Location
 	Set-Location -Path head
 	git config user.name "GitHub Actions Bot"
 	git config user.email "<>"
@@ -149,4 +153,5 @@ foreach ( $solution in $solutions )
 	git add $projectUserFile.FullName
 	git commit -m $commitComment
 	git push
+	Pop-Location
 }
