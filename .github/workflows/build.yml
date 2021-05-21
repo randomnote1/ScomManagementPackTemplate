@@ -51,7 +51,7 @@ jobs:
 
       # Create a release of the management pack
       - name: Generate Release
-        if: github.base_ref == 'dev'
+        if: github.base_ref == 'main'
         uses: softprops/action-gh-release@v1
         with:
           name: v${{ env.Version }}
@@ -63,7 +63,7 @@ jobs:
 
       # Create a beta release of the management pack
       - name: Generate Beta Release
-        if: github.base_ref == 'main'
+        if: github.base_ref == 'dev'
         uses: softprops/action-gh-release@v1
         with:
           name: v${{ env.Version }}
