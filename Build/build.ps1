@@ -18,8 +18,8 @@ msiexec /quiet /i $vsaeMsiFile.FullName
 $vsWherePath = Join-Path -Path ( Join-Path -Path ( Join-Path -Path ${env:ProgramFiles(x86)} -ChildPath 'Microsoft Visual Studio' ) -ChildPath Installer ) -ChildPath vswhere.exe
 Write-Verbose -Message "vswhere.exe path: $vsWherePath"
 
-$solutions = Get-ChildItem -Path . -Filter *.sln -Recurse
-Write-Verbose -Message ( "Solution Files: `n  {0}" -f ( $solutions.FullName -join "  `n" ) )
+$solutions = Get-ChildItem -Path head -Filter *.sln -Recurse
+Write-Verbose -Message ( "Solution Files: `n  {0}" -f ( $solutions.FullName -join "`n  " ) )
 
 foreach ( $solution in $solutions )
 {
@@ -111,7 +111,7 @@ foreach ( $solution in $solutions )
 	}
 
 	# Verify the management pack files were created
-	$buildFiles = Get-ChildItem -Path .\*\bin\Release\* | Where-Object -FilterScript { $_.Extension -match 'mpb' }
+	$buildFiles = Get-ChildItem -Path .\head\*\bin\Release\* | Where-Object -FilterScript { $_.Extension -match 'mpb' }
 
 	# Find the relevant file to release
 	if ( $buildFiles.Extension -contains '.mpb' )
