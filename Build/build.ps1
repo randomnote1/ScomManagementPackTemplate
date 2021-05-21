@@ -111,7 +111,7 @@ foreach ( $solution in $solutions )
 	}
 
 	# Verify the management pack files were created
-	$buildFiles = Get-ChildItem -Path .\head\*\bin\Release\* | Where-Object -FilterScript { $_.Extension -match 'mpb' }
+	$buildFiles = Get-ChildItem -Path .\head\*\*\bin\Release\*
 
 	# Find the relevant file to release
 	if ( $buildFiles.Extension -contains '.mpb' )
