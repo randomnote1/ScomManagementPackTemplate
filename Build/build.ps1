@@ -18,7 +18,10 @@ msiexec /quiet /i $vsaeMsiFile.FullName
 $vsWherePath = Join-Path -Path ( Join-Path -Path ( Join-Path -Path ${env:ProgramFiles(x86)} -ChildPath 'Microsoft Visual Studio' ) -ChildPath Installer ) -ChildPath vswhere.exe
 Write-Verbose -Message "vswhere.exe path: $vsWherePath"
 
-foreach ( $solution in ( Get-ChildItem -Path base -Filter *.sln ) )
+$solutions = Get-ChildItem -Path head -Filter *.sln
+Write-Verbose -Message ( 'Solution Files: `n  {0}' -f ( $solutions.FullName -join '  `n' ) )
+
+foreach ( $solution in $solutions )
 {
 	# Get the Visual Studio version from the solution file
 	$solutionFileContent = $solution | Get-Content
@@ -41,7 +44,7 @@ foreach ( $solution in ( Get-ChildItem -Path base -Filter *.sln ) )
 	$msBuildExe = Get-Item -Path ( Join-Path -Path $vsinfo.installationPath -ChildPath 'MSBuild\Current\Bin\MSBuild.exe' ) -ErrorAction Stop
 	Write-Verbose -Message "MSBuild.exe path: $($msBuildExe.FullName)"
 
-	foreach ( $projectFile in ( Get-ChildItem -Path base -Filter *.mpproj -Recurse ) )
+	foreach ( $projectFile in ( Get-ChildItem -Path $solution.Directory -Filter *.mpproj -Recurse ) )
 	{
 		$projectFileXml = [System.Xml.XmlDocument] ( $projectFile | Get-Content )
 		$managementPackName = $projectFileXml.Project.PropertyGroup | Where-Object -Property Name -NE 'PropertyGroup' | Select-Object -ExpandProperty Name
@@ -108,7 +111,7 @@ foreach ( $solution in ( Get-ChildItem -Path base -Filter *.sln ) )
 	}
 
 	# Verify the management pack files were created
-	$buildFiles = Get-ChildItem -Path .\base\*\bin\Release\* | Where-Object -FilterScript { $_.Extension -match 'mpb' }
+	$buildFiles = Get-ChildItem -Path .\head\*\bin\Release\* | Where-Object -FilterScript { $_.Extension -match 'mpb' }
 
 	# Find the relevant file to release
 	if ( $buildFiles.Extension -contains '.mpb' )
