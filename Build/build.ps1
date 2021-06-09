@@ -152,7 +152,7 @@ foreach ( $solution in $solutions )
 	git add $projectFile.FullName
 	git add $projectUserFile.FullName
 	git commit -m $commitComment
-	git pull orign dev
+	git pull origin $($env:GITHUB_HEAD_REF)
 	git push origin HEAD:$($env:GITHUB_HEAD_REF)
 	Pop-Location
 }
