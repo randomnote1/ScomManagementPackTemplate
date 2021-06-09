@@ -1,6 +1,7 @@
 # Set the verbose preference
 $VerbosePreference = 'Continue'
 
+Write-Verbose -Message "GITHUB_REF: $($env:GITHUB_REF)"
 Write-Verbose -Message "GITHUB_BASE_REF: $($env:GITHUB_BASE_REF)"
 Write-Verbose -Message "GITHUB_HEAD_REF: $($env:GITHUB_HEAD_REF)"
 
@@ -67,8 +68,10 @@ foreach ( $solution in $solutions )
 		$nextVersionBuild = $nextVersion.Build
 		$nextVersionRevision = $nextVersion.Revision
 
-		Write-Verbose -Message "Branch: $env:GITHUB_BASE_REF"
-		switch -Regex ( $env:GITHUB_BASE_REF )
+		#Write-Verbose -Message "Branch: $env:GITHUB_BASE_REF"
+		Write-Verbose -Message "Branch: $env:GITHUB_REF"
+		#switch -Regex ( $env:GITHUB_BASE_REF )
+		switch -Regex ( $env:GITHUB_REF )
 		{
 			# Increment the minor version
 			'^dev'
@@ -159,6 +162,7 @@ foreach ( $solution in $solutions )
 	git commit -m $commitComment
 	#git pull origin $($env:GITHUB_HEAD_REF)
 	#git pull origin $($env:GITHUB_BASE_REF)
-	git push origin HEAD:$($env:GITHUB_BASE_REF)
+	#git push origin HEAD:$($env:GITHUB_BASE_REF)
+	git push origin HEAD:$($env:GITHUB_REF)
 	Pop-Location
 }
