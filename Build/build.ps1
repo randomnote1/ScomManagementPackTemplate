@@ -2,8 +2,6 @@
 $VerbosePreference = 'Continue'
 
 Write-Verbose -Message "GITHUB_REF: $($env:GITHUB_REF)"
-Write-Verbose -Message "GITHUB_BASE_REF: $($env:GITHUB_BASE_REF)"
-Write-Verbose -Message "GITHUB_HEAD_REF: $($env:GITHUB_HEAD_REF)"
 
 # Download the System Center Visual Studio Authoring Extensions (VSAE)
 $invokeWebRequestParams = @{
@@ -22,7 +20,6 @@ msiexec /quiet /i $vsaeMsiFile.FullName
 $vsWherePath = Join-Path -Path ( Join-Path -Path ( Join-Path -Path ${env:ProgramFiles(x86)} -ChildPath 'Microsoft Visual Studio' ) -ChildPath Installer ) -ChildPath vswhere.exe
 Write-Verbose -Message "vswhere.exe path: $vsWherePath"
 
-#$solutions = Get-ChildItem -Path head -Filter *.sln -Recurse
 $solutions = Get-ChildItem -Path base -Filter *.sln -Recurse
 Write-Verbose -Message ( "Solution Files: `n  {0}" -f ( $solutions.FullName -join "`n  " ) )
 
@@ -68,13 +65,10 @@ foreach ( $solution in $solutions )
 		$nextVersionBuild = $nextVersion.Build
 		$nextVersionRevision = $nextVersion.Revision
 
-		#Write-Verbose -Message "Branch: $env:GITHUB_BASE_REF"
 		Write-Verbose -Message "Branch: $env:GITHUB_REF"
-		#switch -Regex ( $env:GITHUB_BASE_REF )
 		switch -Regex ( $env:GITHUB_REF )
 		{
 			# Increment the minor version
-			#'^dev'
 			'dev'
 			{
 				$commitComment = 'Incrementing minor version'
@@ -82,7 +76,6 @@ foreach ( $solution in $solutions )
 			}
 
 			# Increment the major version
-			#'^main'
 			'main'
 			{
 				$commitComment = 'Incrementing major version'
@@ -120,7 +113,6 @@ foreach ( $solution in $solutions )
 	}
 
 	# Verify the management pack files were created
-	#$buildFiles = Get-ChildItem -Path .\head\*\*\bin\Release\*
 	$buildFiles = Get-ChildItem -Path .\base\*\*\bin\Release\*
 	Write-Verbose -Message ( "Management Pack Files:`n  {0}" -f ( $buildFiles.FullName -join "`n  " ) )
 
@@ -140,7 +132,6 @@ foreach ( $solution in $solutions )
 
 	if ( -not $releaseFile )
 	{
-		#throw 'No management pack files found in ".\head\*\*\bin\Release\*"'
 		throw 'No management pack files found in ".\base\*\*\bin\Release\*"'
 	}
 	else
@@ -154,17 +145,12 @@ foreach ( $solution in $solutions )
 
 	# Commit the version update to the reference repo
 	Push-Location
-	#Set-Location -Path head
 	Set-Location -Path base
-	#git show-ref
 	git config user.name "GitHub Actions Bot"
 	git config user.email "<>"
 	git add $projectFile.FullName
 	git add $projectUserFile.FullName
 	git commit -m $commitComment
-	#git pull origin $($env:GITHUB_HEAD_REF)
-	#git pull origin $($env:GITHUB_BASE_REF)
-	#git push origin HEAD:$($env:GITHUB_BASE_REF)
 	git push origin HEAD:$($env:GITHUB_REF)
 	Pop-Location
 }

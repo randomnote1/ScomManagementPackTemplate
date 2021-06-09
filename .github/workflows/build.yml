@@ -6,41 +6,22 @@ on:
     branches:
       - dev
       - main
-    #types: [closed]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   
   build:
-    # Only run when a pull request is merged to dev or main
-    #if: |
-    #  ( github.event.pull_request.merged == true ) &&
-    #  (
-    #     ( github.base_ref == 'main' ) ||
-    #     ( github.base_ref == 'dev' )
-    #  )
-    
     if: ( github.ref == 'refs/heads/main' ) ||  ( github.ref == 'refs/heads/dev' )
     
     runs-on: windows-latest
 
     steps:
-
       # Check out the repository the pull request in merging into (dev/main)
       - name: Checkout Base Repo
         uses: actions/checkout@v2
         with:
-          #ref: ${{ github.event.pull_request.base.sha }}
           path: base
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      #- name: Checkout Head Repo
-      #  uses: actions/checkout@v2
-      #  with:
-      #    ref: ${{ github.event.pull_request.head.sha }}
-      #    repository: ${{ github.event.pull_request.head.repo.full_name }}
-      #    path: head
-      #    token: ${{ secrets.GITHUB_TOKEN }}
       
       # Execute the build PowerShell script
       - name: Execute build script
@@ -79,18 +60,3 @@ jobs:
           files: ${{ env.ArtifactFileName }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      # Open a pull request for dev <- main
-      #- name: Open pull to commit into dev from main
-      #  if: ( github.base_ref == 'main' ) && ( github.head_ref == 'dev' )
-      #  uses: peter-evans/create-pull-request@v3
-      #  with:
-      #    path: head
-      #    commit-message: Update dev version to v${{ env.Version }}
-      #    committer: GitHub Actions Bot <noreply@github.com>
-      #    author: GitHub Actions Bot <noreply@github.com>
-      #    branch: main
-      #    delete-branch: false
-      #    base: dev
-      #    title: Rebase dev
-      #    body: Update dev to v${{ env.Version }} from main.
