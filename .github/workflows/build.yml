@@ -22,16 +22,17 @@ jobs:
     steps:
 
       # Check out the repository the pull request in merging into (dev/main)
-      - name: Checkout Base Repo
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.base.ref }}
-          path: base
+      #- name: Checkout Base Repo
+      #  uses: actions/checkout@v2
+      #  with:
+      #    ref: ${{ github.event.pull_request.base.sha }}
+      #    path: base
 
       - name: Checkout Head Repo
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: head
       
       # Execute the build PowerShell script
