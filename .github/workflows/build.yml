@@ -22,11 +22,11 @@ jobs:
     steps:
 
       # Check out the repository the pull request in merging into (dev/main)
-      #- name: Checkout Base Repo
-      #  uses: actions/checkout@v2
-      #  with:
-      #    ref: ${{ github.event.pull_request.base.sha }}
-      #    path: base
+      - name: Checkout Base Repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
 
       - name: Checkout Head Repo
         uses: actions/checkout@v2
