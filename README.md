@@ -6,7 +6,7 @@ This repository is a template for SCOM management pack projects. It includes Git
 
 ### Production Release
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/randomnote1/ScomManagementPackTemplate?label=Alert%20Management)](../../../ScomManagementPackTemplate/releases/latest/download/ScomManagementPackTemplate.zip)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/randomnote1/ScomManagementPackTemplate?label=Alert%20Management)](../../../ScomManagementPackTemplate/releases/latest)
 
 [![Alert Management](https://img.shields.io/badge/Alert%20Management-Documentation-blue)](../../../ScomManagementPackTemplate/wiki)
 
