@@ -20,11 +20,11 @@ jobs:
     #     ( github.base_ref == 'dev' )
     #  )
     
-    if: |
-      (
-         ( github.base_ref == 'main' ) ||
-         ( github.base_ref == 'dev' )
-      )
+    #if: |
+    #  (
+    #     ( github.base_ref == 'main' ) ||
+    #     ( github.base_ref == 'dev' )
+    #  )
     
     runs-on: windows-latest
 
