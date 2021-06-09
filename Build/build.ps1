@@ -74,14 +74,16 @@ foreach ( $solution in $solutions )
 		switch -Regex ( $env:GITHUB_REF )
 		{
 			# Increment the minor version
-			'^dev'
+			#'^dev'
+			'dev'
 			{
 				$commitComment = 'Incrementing minor version'
 				$nextVersionMinor++
 			}
 
 			# Increment the major version
-			'^main'
+			#'^main'
+			'main'
 			{
 				$commitComment = 'Incrementing major version'
 				$nextVersionMajor++
