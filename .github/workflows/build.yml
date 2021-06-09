@@ -27,7 +27,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           path: base
-          token: ${{ secrets.BUILDTOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout Head Repo
         uses: actions/checkout@v2
@@ -35,7 +35,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           path: head
-          token: ${{ secrets.BUILDTOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       
       # Execute the build PowerShell script
       - name: Execute build script
