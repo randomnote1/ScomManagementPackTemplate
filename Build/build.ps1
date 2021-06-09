@@ -160,6 +160,6 @@ foreach ( $solution in $solutions )
 	#git pull origin $($env:GITHUB_HEAD_REF)
 	#git pull origin $($env:GITHUB_BASE_REF)
 	#git push origin HEAD:$($env:GITHUB_HEAD_REF)
-	#git push origin HEAD:$($env:GITHUB_BASE_REF)
+	git push
 	Pop-Location
 }
