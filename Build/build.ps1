@@ -151,7 +151,7 @@ foreach ( $solution in $solutions )
 	Push-Location
 	#Set-Location -Path head
 	Set-Location -Path base
-	git show-ref
+	#git show-ref
 	git config user.name "GitHub Actions Bot"
 	git config user.email "<>"
 	git add $projectFile.FullName
