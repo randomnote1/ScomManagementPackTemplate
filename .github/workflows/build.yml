@@ -20,11 +20,7 @@ jobs:
     #     ( github.base_ref == 'dev' )
     #  )
     
-    #if: |
-    #  (
-    #     ( github.base_ref == 'main' ) ||
-    #     ( github.base_ref == 'dev' )
-    #  )
+    if: ( github.ref == 'refs/heads/main' ) ||  ( github.ref == 'refs/heads/dev' )
     
     runs-on: windows-latest
 
@@ -48,9 +44,8 @@ jobs:
       
       # Execute the build PowerShell script
       - name: Execute build script
-        #if: |
-        #  ( github.base_ref == 'main' ) ||  
-        #  ( ( github.base_ref == 'dev' ) && ( github.head_ref != 'main' ) )
+        if: |
+          ( github.ref == 'refs/heads/main' ) ||  ( github.ref == 'refs/heads/dev' )
         shell: powershell
         run: .\base\Build\build.ps1
       
@@ -63,7 +58,7 @@ jobs:
 
       # Create a release of the management pack
       - name: Generate Release
-        if: github.base_ref == 'main'
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v1
         with:
           name: v${{ env.Version }}
@@ -75,7 +70,7 @@ jobs:
 
       # Create a beta release of the management pack
       - name: Generate Beta Release
-        if: github.base_ref == 'dev'
+        if: github.ref == 'refs/heads/dev'
         uses: softprops/action-gh-release@v1
         with:
           name: v${{ env.Version }}
