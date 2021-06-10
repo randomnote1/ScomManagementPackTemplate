@@ -145,7 +145,7 @@ foreach ( $solution in $solutions )
 
 	if ( $env:GITHUB_REF -match 'main' )
 	{
-		$releaseHistoryFile = Get-Item -Path '.\WikiSource\Release History.md'
+		$releaseHistoryFile = Get-Item -Path '.\base\WikiSource\Release History.md'
 		$releaseHistory = Get-Content -Path $releaseHistoryFile
 		$releaseHistory = $releaseHistory -replace '## Unreleased',"v$($newVersion.ToString())"
 		$releaseHistory | Set-Content -Path $releaseHistoryFile
