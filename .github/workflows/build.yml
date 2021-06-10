@@ -1,6 +1,6 @@
 name: Build Management Pack
 
-# Run when a pull request is closed
+# When a push occurs to the dev or main branches
 on:
   push:
     branches:
@@ -25,8 +25,7 @@ jobs:
       
       # Execute the build PowerShell script
       - name: Execute build script
-        if: |
-          ( github.ref == 'refs/heads/main' ) ||  ( github.ref == 'refs/heads/dev' )
+        if: ( github.ref == 'refs/heads/main' ) ||  ( github.ref == 'refs/heads/dev' )
         shell: powershell
         run: .\base\Build\build.ps1
       
