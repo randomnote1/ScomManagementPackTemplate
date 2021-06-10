@@ -143,11 +143,19 @@ foreach ( $solution in $solutions )
 		Write-Output -InputObject "ArtifactFileName=$($releaseFile.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 	}
 
+	if ( $env:GITHUB_REF -match 'main' )
+	{
+		$releaseHistoryFile = Get-Item -Path '.\WikiSource\Release History.md'
+		$releaseHistory = Get-Content -Path $releaseHistoryFile
+		$releaseHistory = $releaseHistory -replace '## Unreleased',"v$($newVersion.ToString())"
+		$releaseHistory | Set-Content -Path $releaseHistoryFile
+	}
+
 	# Commit the version update to the reference repo
 	Push-Location
 	Set-Location -Path base
 	git config user.name "GitHub Actions Bot"
-	git config user.email "<>"
+	git config user.email "<noreply@github.com>"
 	git add $projectFile.FullName
 	git add $projectUserFile.FullName
 	git commit -m $commitComment
